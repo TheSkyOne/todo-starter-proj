@@ -1,5 +1,6 @@
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
+import { userLoggedIn, userSignedUp } from '../store/user.action.js'
 
 const { useState } = React
 
@@ -15,27 +16,27 @@ export function LoginSignup({ onSetUser }) {
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        onLogin(credentials)
+        onLoginOrSignUp(credentials)
     }
 
 
-    function onLogin(credentials) {
-        isSignup ? signup(credentials) : login(credentials)
+    function onLoginOrSignUp(credentials) {
+        isSignup ? userSignedUp(credentials) : userLoggedIn(credentials)
     }
 
-    function login(credentials) {
-        userService.login(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Logged in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
-    }
+    // function login(credentials) {
+        // userService.login(credentials)
+        //     .then(onSetUser)
+        //     .then(() => { showSuccessMsg('Logged in successfully') })
+        //     .catch((err) => { showErrorMsg('Oops try again') })
+    // }
 
-    function signup(credentials) {
-        userService.signup(credentials)
-            .then(onSetUser)
-            .then(() => { showSuccessMsg('Signed in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
-    }
+    // function signup(credentials) {
+        // userService.signup(credentials)
+        //     .then(onSetUser)
+        //     .then(() => { showSuccessMsg('Signed in successfully') })
+        //     .catch((err) => { showErrorMsg('Oops try again') })
+    // }
 
     return (
         <div className="login-page">

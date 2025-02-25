@@ -1,5 +1,3 @@
-import { todoService } from "../services/todo.service.js"
-
 const SET_TODOS = "SET_TODOS"
 const ADD_TODO = "ADD_TODO"
 const REMOVE_TODO = "REMOVE_TODO"
