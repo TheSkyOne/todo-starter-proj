@@ -1,6 +1,6 @@
 import { DataTableRow } from "./DataTableRow.jsx"
 
-export function DataTable({ todos, onRemoveTodo }) {
+export function DataTable({ todos, onRemoveTodo }) {    
     return <table border="1" className="data-table">
         <thead>
             <tr>

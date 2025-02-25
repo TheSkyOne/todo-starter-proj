@@ -10,7 +10,7 @@ const SET_IS_LOADING = "SET_IS_LOADING"
 
 
 const initialState = {
-    todoList: todoService.query(),
+    todoList: [],
     isLoading: false,
     filter: {}
 }
@@ -34,5 +34,7 @@ export function todoReducer(state = initialState, cmd) {
 
         case SET_IS_LOADING:
             return { ...state, isLoading: cmd.isLoading }
+
+        default: return state
     }
 }

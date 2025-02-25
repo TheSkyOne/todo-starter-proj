@@ -1,8 +1,6 @@
 const { useState, useEffect } = React
 
 export function TodoFilter({ filterBy, onSetFilterBy }) {
-
-
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
 
     useEffect(() => {
