@@ -29,6 +29,10 @@ function query(filterBy = {}) {
                 todos = todos.filter(todo => todo.importance >= filterBy.importance)
             }
 
+            if (filterBy.category && filterBy.category === "done") {
+                todos = todos.filter(todo => todo.isDone)
+            }
+
             return todos
         })
 }

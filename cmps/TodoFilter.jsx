@@ -21,6 +21,9 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
             case 'checkbox':
                 value = target.checked
                 break
+            
+            case 'select':
+                break //do nothing as we already have the correct value format for select, here just for clarity
 
             default: break
         }
@@ -34,6 +37,7 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         onSetFilterBy(filterByToEdit)
     }
 
+
     const { txt, importance } = filterByToEdit
     return (
         <section className="todo-filter">
@@ -46,6 +50,11 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                 <input value={importance} onChange={handleChange}
                     type="number" placeholder="By Importance" id="importance" name="importance"
                 />
+                <label htmlFor="category">Category:</label>
+                <select onChange={handleChange} id="category" name="category">
+                    <option value="all">All</option>
+                    <option value="done">Done</option>
+                </select>
 
                 <button hidden>Set Filter</button>
             </form>

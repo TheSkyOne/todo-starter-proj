@@ -4,3 +4,10 @@
     margin: 1em 0;
 }
 
+.todo-filter form {
+    display: grid;
+    row-gap: 8px;
+    grid-template-columns: 200px;
+    grid-template-rows: auto;
+}
+

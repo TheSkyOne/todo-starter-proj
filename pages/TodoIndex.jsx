@@ -42,6 +42,7 @@ export function TodoIndex() {
     function onToggleTodo(todo) {
         const todoToSave = { ...todo, isDone: !todo.isDone }
         updateTodo(todoToSave)
+        loadTodos(filterBy)
         // todoService.save(todoToSave)
         //     .then((savedTodo) => {
         //         setTodos(prevTodos => prevTodos.map(currTodo => (currTodo._id !== todo._id) ? currTodo : { ...savedTodo }))
