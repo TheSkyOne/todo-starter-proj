@@ -5,6 +5,7 @@ import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodos, removeTodo, setFilter, updateTodo } from "../store/todo.action.js"
 import { eventBusService } from "../services/event-bus.service.js"
+import { userBalanceIncrease } from "../store/user.action.js"
 
 const { useState, useEffect } = React
 const { useSelector } = ReactRedux
@@ -46,6 +47,8 @@ export function TodoIndex() {
             .then(() => loadTodos(filterBy))
         
         eventBusService.emit("progress-updated")
+        if (!todo.isDone) userBalanceIncrease()
+        
         // todoService.save(todoToSave)
         //     .then((savedTodo) => {
         //         setTodos(prevTodos => prevTodos.map(currTodo => (currTodo._id !== todo._id) ? currTodo : { ...savedTodo }))

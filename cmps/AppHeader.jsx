@@ -16,6 +16,7 @@ export function AppHeader() {
     const navigate = useNavigate()
     // const [user, setUser] = useState(userService.getLoggedinUser())
     const user = useSelector(storeState => storeState.userState.user)
+    const userBalance = useSelector(storeState => storeState.userState.user ? storeState.userState.user.balance : null)
     
     function onLogout() {
         userLoggedOut()
@@ -28,10 +29,11 @@ export function AppHeader() {
         //     })
     }
 
-    function onSetUser(user) {
-        userLoggedIn(user)
-        navigate('/')
-    }
+    // function onSetUser(user) {
+    //     userLoggedIn(user)
+    //     navigate('/')
+    // }
+
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
@@ -40,10 +42,11 @@ export function AppHeader() {
                     < section >
                         <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
                         <button onClick={onLogout}>Logout</button>
+                        <h4>Your balance is: {userBalance}</h4>
                     </ section >
                 ) : (
                     <section>
-                        <LoginSignup onSetUser={onSetUser} />
+                        <LoginSignup />
                     </section>
                 )}
                 <nav className="app-nav">

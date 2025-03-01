@@ -5,7 +5,7 @@ import { store } from "./store.js"
 
 export function userSignedUp(user) {
     userService.signup({ username: user.username, password: user.password, fullname: user.fullname })
-        .then(() => {
+        .then(user => {
             store.dispatch({ type: "SET_USER", user })
             showSuccessMsg("Signed-up successfully!")
         })
@@ -38,6 +38,18 @@ export function userLoggedOut() {
         .catch(err => {
             console.log("failed to set user on log-out")
             showErrorMsg("Failed to log-out")
+            throw err
+        })
+}
+
+export function userBalanceIncrease() {
+    const currentUser = userService.getLoggedinUser()
+    const newBalance =  currentUser.balance + 10
+    userService.updateUserBalance(newBalance)
+        .then(() => {
+            store.dispatch({ type: "SET_BALANCE", newBalance})
+        })
+        .catch(err => {
             throw err
         })
 }
