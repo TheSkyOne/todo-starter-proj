@@ -34,8 +34,10 @@ export function removeTodo(todoId) {
 }
 
 export function updateTodo(updatedTodo) {
-    todoService.save(updatedTodo)
-        .then(() => store.dispatch({ type: "UPDATE_TODO", updatedTodo }))
+    return todoService.save(updatedTodo)
+        .then(() => {
+            store.dispatch({ type: "UPDATE_TODO", updatedTodo })
+        })
         .catch(() => {
             console.log("failed to update todo", err)
             throw err
@@ -56,4 +58,20 @@ export function setFilter(newFilter) {
     //         throw err
     //     })
     //     .finally(() => store.dispatch({ type: "SET_IS_LOADING", isLoading: false }))
+}
+
+
+export function getTodosCount() {
+    return todoService.query({})
+        .then(todos => {
+            return todos.length
+        })
+}
+
+
+export function getDoneTodosCount() {
+    return todoService.query({category: "done"})
+        .then(todos => {
+            return todos.length
+        })
 }

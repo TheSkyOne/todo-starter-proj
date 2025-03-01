@@ -1,0 +1,18 @@
+.progress-bar {
+    position: relative;
+}
+
+.background, .foreground {
+    position: absolute; 
+    top: 0;
+    left: 0;
+}
+
+
+.progress-bar .background {
+    background-color: aliceblue;
+}
+
+.progress-bar .foreground {
+    background-color: cornflowerblue;
+}

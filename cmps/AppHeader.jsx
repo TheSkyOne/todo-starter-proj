@@ -9,6 +9,7 @@ import { userLoggedIn, userLoggedOut } from '../store/user.action.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg } from '../services/event-bus.service.js'
+import { ProgressBar } from './ProgressBar.jsx'
 
 
 export function AppHeader() {
@@ -52,6 +53,9 @@ export function AppHeader() {
                     <NavLink to="/dashboard" >Dashboard</NavLink>
                 </nav>
             </section>
+
+            <label htmlFor="progress-bar">Todos Progress:</label>
+            <ProgressBar id="progress-bar"></ProgressBar>
             <UserMsg />
         </header>
     )

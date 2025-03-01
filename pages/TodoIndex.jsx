@@ -4,6 +4,7 @@ import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodos, removeTodo, setFilter, updateTodo } from "../store/todo.action.js"
+import { eventBusService } from "../services/event-bus.service.js"
 
 const { useState, useEffect } = React
 const { useSelector } = ReactRedux
@@ -42,7 +43,9 @@ export function TodoIndex() {
     function onToggleTodo(todo) {
         const todoToSave = { ...todo, isDone: !todo.isDone }
         updateTodo(todoToSave)
-        loadTodos(filterBy)
+            .then(() => loadTodos(filterBy))
+        
+        eventBusService.emit("progress-updated")
         // todoService.save(todoToSave)
         //     .then((savedTodo) => {
         //         setTodos(prevTodos => prevTodos.map(currTodo => (currTodo._id !== todo._id) ? currTodo : { ...savedTodo }))
