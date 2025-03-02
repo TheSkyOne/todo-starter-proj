@@ -1,5 +1,7 @@
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { addUserActivity } from "../store/user.action.js"
+import { createActivity } from "../services/user.service.js"
 
 const { useState, useEffect } = React
 const { useNavigate, useParams } = ReactRouterDOM
@@ -45,6 +47,10 @@ export function TodoEdit() {
         ev.preventDefault()
         todoService.save(todoToEdit)
             .then((savedTodo) => {
+                const isEditing = params.todoId ? true : false
+                const newActivity = createActivity(`${isEditing ? "Edited" : "Added"} Todo: "${savedTodo.txt}"`)
+                addUserActivity(newActivity)
+
                 navigate('/todo')
                 showSuccessMsg(`Todo Saved (id: ${savedTodo._id})`)
             })

@@ -5,7 +5,8 @@ import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { loadTodos, removeTodo, setFilter, updateTodo } from "../store/todo.action.js"
 import { eventBusService } from "../services/event-bus.service.js"
-import { userBalanceIncrease } from "../store/user.action.js"
+import { userBalanceIncrease, addUserActivity } from "../store/user.action.js"
+import { createActivity } from "../services/user.service.js"
 
 const { useState, useEffect } = React
 const { useSelector } = ReactRedux
@@ -30,6 +31,10 @@ export function TodoIndex() {
 
     function onRemoveTodo(todoId) {
         removeTodo(todoId)
+            .then(() => {
+                const newActivity = createActivity(`Todo Removed: "${todoId}"`)
+                addUserActivity(newActivity)
+            })
         // todoService.remove(todoId)
         //     .then(() => {
         //         setTodos(prevTodos => prevTodos.filter(todo => todo._id !== todoId))
@@ -44,7 +49,13 @@ export function TodoIndex() {
     function onToggleTodo(todo) {
         const todoToSave = { ...todo, isDone: !todo.isDone }
         updateTodo(todoToSave)
-            .then(() => loadTodos(filterBy))
+            .then(todo => {
+                loadTodos(filterBy)
+
+                const desc = `Todo set ${todo.isDone ? "done" : "undone"}`
+                const newActivity = createActivity(`${desc}: "${todo.txt}"`)
+                addUserActivity(newActivity)
+            })
         
         eventBusService.emit("progress-updated")
         if (!todo.isDone) userBalanceIncrease()

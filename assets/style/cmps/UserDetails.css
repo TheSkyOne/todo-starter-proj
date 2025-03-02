@@ -1,0 +1,41 @@
+.user-details form {
+    display: grid;
+    justify-content: center;
+    gap: 24px;
+}
+
+.user-details h1 {
+    text-align: center;
+}
+
+.user-details .field {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-list button {
+    align-self: center;
+}
+
+
+.activity-list ul {
+    display: grid;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+
+.activity-list ul li {
+    padding: 8px;
+}
+
+.activity-list ul li:nth-child(odd) {
+    background-color: var(--clr1bg);
+}

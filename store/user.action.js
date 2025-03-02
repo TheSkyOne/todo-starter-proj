@@ -44,12 +44,26 @@ export function userLoggedOut() {
 
 export function userBalanceIncrease() {
     const currentUser = userService.getLoggedinUser()
-    const newBalance =  currentUser.balance + 10
+    const newBalance = currentUser.balance + 10
     userService.updateUserBalance(newBalance)
-        .then(() => {
-            store.dispatch({ type: "SET_BALANCE", newBalance})
-        })
-        .catch(err => {
-            throw err
-        })
+        .then(() => store.dispatch({ type: "SET_BALANCE", newBalance }))
+        .catch(err => { throw err })
+}
+
+export function updateUserFullname(newFullname) {
+    userService.updateUserFullname(newFullname)
+        .then(() => store.dispatch({ type: "SET_FULLNAME", newFullname }))
+        .catch(err => { throw err })
+}
+
+export function addUserActivity(newActivity) {
+    userService.updateUserActivities(newActivity)
+        .then(() => store.dispatch({ type: "ADD_ACTIVITY", newActivity }))
+        .catch(err => { throw err })
+}
+
+export function clearActivities() {
+    userService.clearActivities()
+        .then(() => store.dispatch({ type: "CLEAR_ACTIVITIES" }))
+        .catch(err => { throw err })
 }

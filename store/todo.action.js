@@ -5,9 +5,7 @@ import { store } from "./store.js"
 export function loadTodos(filter = {}) {
     store.dispatch({ type: "SET_IS_LOADING", isLoading: true })
     todoService.query(filter)
-        .then(todoList => {
-            store.dispatch({ type: "SET_TODOS", todoList })
-        })
+        .then(todoList => store.dispatch({ type: "SET_TODOS", todoList }))
         .catch(err => {
             console.log("failed to load todo list", err)
             throw err
@@ -16,7 +14,7 @@ export function loadTodos(filter = {}) {
 }
 
 export function addTodo(newTodo) {
-    todoService.save(newTodo)
+    return todoService.save(newTodo)
         .then(() => store.dispatch({ type: "ADD_TODO", newTodo }))
         .catch(() => {
             console.log("failed to add new todo", err)
@@ -25,7 +23,7 @@ export function addTodo(newTodo) {
 }
 
 export function removeTodo(todoId) {
-    todoService.remove(todoId)
+    return todoService.remove(todoId)
         .then(() => store.dispatch({ type: "REMOVE_TODO", todoId }))
         .catch(() => {
             console.log("failed to remove todo", err)
@@ -37,6 +35,7 @@ export function updateTodo(updatedTodo) {
     return todoService.save(updatedTodo)
         .then(() => {
             store.dispatch({ type: "UPDATE_TODO", updatedTodo })
+            return updatedTodo
         })
         .catch(() => {
             console.log("failed to update todo", err)
@@ -70,7 +69,7 @@ export function getTodosCount() {
 
 
 export function getDoneTodosCount() {
-    return todoService.query({category: "done"})
+    return todoService.query({ category: "done" })
         .then(todos => {
             return todos.length
         })

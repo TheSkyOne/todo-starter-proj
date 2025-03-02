@@ -9,8 +9,12 @@ export const userService = {
     getById,
     query,
     getEmptyCredentials,
-    updateUserBalance
+    updateUserBalance,
+    updateUserFullname,
+    updateUserActivities,
+    clearActivities
 }
+
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
 
@@ -32,10 +36,17 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname }
-    user.createdAt = user.updatedAt = Date.now()
-    user.balance = 0
-    user.activities = []
+    const user = {
+        username,
+        password,
+        fullname,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        balance: 0,
+        activities: [],
+        prefs: { color: "black", bgColor: "white" }
+    }
+
 
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
@@ -51,7 +62,7 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance, activities: user.activities }
+    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance, activities: user.activities, prefs: user.prefs }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
@@ -66,9 +77,72 @@ function getEmptyCredentials() {
 
 function updateUserBalance(newBalance) {
     const currentUser = getLoggedinUser()
-    const updatedUser = {...currentUser, balance: newBalance}
+    const updatedUser = { ...currentUser, balance: newBalance }
     _setLoggedinUser(updatedUser)
     return storageService.put(STORAGE_KEY, updatedUser)
+}
+
+function updateUserFullname(newFullname) {
+    const currentUser = getLoggedinUser()
+    if (!currentUser) throw "Please log-in to update your name"
+
+    const updatedUser = { ...currentUser, fullname: newFullname }
+    _setLoggedinUser(updatedUser)
+    return storageService.put(STORAGE_KEY, updatedUser)
+}
+
+function updateUserActivities(newActivity) {
+    const currentUser = getLoggedinUser()
+    var newActivities = currentUser.activities
+    var found = false
+
+    for (let i = 0; i < newActivities.length; i++) {
+        if (newActivities[i].creationTime === newActivity.creationTime) {
+            newActivities[i] = newActivity
+            found = true
+            break
+        }
+    }
+
+    if (!found) newActivities.push(newActivity)
+
+    const updatedUser = { ...currentUser, activities: newActivities }
+    _setLoggedinUser(updatedUser)
+    return storageService.put(STORAGE_KEY, updatedUser)
+}
+
+export function createActivity(desc) {
+    const creationTime = Date.now()
+    const formattedTimestamp = _formatActivityTimestamp(creationTime)
+    return { creationTime, desc, displayText: `${formattedTimestamp}: ${desc}` }
+}
+
+export function updateActivity(activity) {
+    const reformattedTimestamp = _formatActivityTimestamp(activity.creationTime)
+    activity.displayText = `${reformattedTimestamp}: ${activity.desc}`
+    updateUserActivities(activity)
+}
+
+function clearActivities() {
+    const currentUser = getLoggedinUser()
+    const updatedUser = { ...currentUser, activities: [] }
+    _setLoggedinUser(updatedUser)
+    return storageService.put(STORAGE_KEY, updatedUser)
+}
+
+function _formatActivityTimestamp(timeMillis) {
+    const diff = Date.now() - timeMillis
+    const minute_millisec = 60000
+    const minutes_passed = Math.floor(diff / minute_millisec)
+    const hours_passed = Math.floor(minutes_passed / 60)
+
+    if (minutes_passed < 1) return "Just now"
+    if (minutes_passed < 2) return "A minute ago"
+    if (minutes_passed < 60) return `${minutes_passed} minutes ago`
+    if (hours_passed < 2) return "An hour ago"
+    if (hours_passed < 24) return `${hours_passed} hours ago`
+
+    return "A while ago"
 }
 
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})

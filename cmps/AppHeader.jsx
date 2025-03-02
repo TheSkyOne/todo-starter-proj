@@ -17,7 +17,8 @@ export function AppHeader() {
     // const [user, setUser] = useState(userService.getLoggedinUser())
     const user = useSelector(storeState => storeState.userState.user)
     const userBalance = useSelector(storeState => storeState.userState.user ? storeState.userState.user.balance : null)
-    
+    const userFullname = useSelector(storeState => storeState.userState.user ? storeState.userState.user.fullname : null)
+
     function onLogout() {
         userLoggedOut()
         // userService.logout()
@@ -40,7 +41,7 @@ export function AppHeader() {
                 <h1>React Todo App</h1>
                 {user ? (
                     < section >
-                        <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
+                        <Link to={`/user/${user._id}`}>Hello {userFullname}</Link>
                         <button onClick={onLogout}>Logout</button>
                         <h4>Your balance is: {userBalance}</h4>
                     </ section >
@@ -54,6 +55,7 @@ export function AppHeader() {
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/todo" >Todos</NavLink>
                     <NavLink to="/dashboard" >Dashboard</NavLink>
+                    <NavLink to="userDetails">User Details</NavLink>
                 </nav>
             </section>
 

@@ -1,4 +1,4 @@
-button, .btn {
+button, .btn, input[type="submit"] {
     cursor: pointer;
     background-color: var(--clr2bg);
     margin: 0.5em;
@@ -7,7 +7,7 @@ button, .btn {
     border-radius: 4px;
 }
 
-button:hover, .btn:hover {
+button:hover, .btn:hover, input[type="submit"]:hover {
     background-color: var(--clr2);
     color: white;
     transition: 0.3s;
